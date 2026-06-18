@@ -248,7 +248,10 @@ def get_regions_json(
     geometries = []
     tissue_region = []
     for feature, geom in zip(gj, all_geometries):
-        if "classification" in feature.properties:
+        if "objectType" in feature.properties and feature.properties["objectType"] == "annotation":
+            tissue_region.append(geom)
+            region_labels.append("tissue")                
+        elif "classification" in feature.properties:
             label = feature.properties["classification"]["name"].lower()
             if tissue_annotation is not None and label == tissue_annotation:
                 tissue_region.append(geom)

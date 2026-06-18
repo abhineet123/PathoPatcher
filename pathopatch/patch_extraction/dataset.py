@@ -147,7 +147,7 @@ class LivePatchWSIConfig(BaseModel):
         return v
 
     def __post_init_post_parse__(self) -> None:
-        if self.label_map_file is None or self.label_map is None:
+        if self.label_map_file is None and self.label_map is None:
             self.label_map = {"background": 0}
         if self.otsu_annotation is not None:
             self.otsu_annotation = self.otsu_annotation.lower()
@@ -170,8 +170,8 @@ class LivePatchWSIConfig(BaseModel):
                 raise FileNotFoundError(
                     f"Annotation path {self.annotation_path} does not exist"
                 )
-            if Path(self.annotation_path.suffix) != "json":
-                raise ValueError("Only JSON annotations are supported")
+            if str(Path(self.annotation_path).suffix) not in [".json", ".geojson"]:
+                raise ValueError("Only JSON and GEOJSON annotations are supported")
 
 
 class LivePatchWSIDataset(Dataset):
