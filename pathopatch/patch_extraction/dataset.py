@@ -635,7 +635,6 @@ class LivePatchWSIDataset(Dataset):
             )
             for poly in polygons
         ]
-
         return region_labels, polygons, polygons_downsampled, tissue_region
 
     def __len__(self) -> int:
